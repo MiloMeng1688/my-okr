@@ -1,22 +1,75 @@
-{
-  "name": "okr-app",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "13.5.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "^3.3.3"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/react": "^18.0.0",
-    "@types/node": "^18.0.0",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.21"
+import { useState } from "react"
+
+export default function Home() {
+  const [objective, setObjective] = useState("")
+  const [keyResults, setKeyResults] = useState<string[]>([])
+  const [inputKR, setInputKR] = useState("")
+
+  const handleAddKR = () => {
+    if (inputKR.trim()) {
+      setKeyResults([...keyResults, inputKR])
+      setInputKR("")
+    }
   }
+
+  return (
+    <div style={{ fontFamily: "sans-serif", padding: 40 }}>
+      <h1 style={{ fontSize: 30 }}>🎯 我的 OKR 系统</h1>
+      <p>欢迎来到你的个人 OKR 工具页面！</p>
+
+      <div style={{ marginTop: 30 }}>
+        <h2>👉 设置目标（Objective）：</h2>
+        <input
+          type="text"
+          placeholder="请输入你的目标"
+          value={objective}
+          onChange={(e) => setObjective(e.target.value)}
+          style={{ padding: 8, fontSize: 16, width: "100%", marginTop: 8 }}
+        />
+      </div>
+
+      <div style={{ marginTop: 30 }}>
+        <h2>👉 填写关键结果（Key Results）：</h2>
+        <input
+          type="text"
+          placeholder="请输入一个关键结果"
+          value={inputKR}
+          onChange={(e) => setInputKR(e.target.value)}
+          style={{ padding: 8, fontSize: 16, width: "80%", marginRight: 8 }}
+        />
+        <button
+          onClick={handleAddKR}
+          style={{
+            padding: "8px 16px",
+            fontSize: 16,
+            backgroundColor: "#0070f3",
+            color: "white",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer",
+          }}
+        >
+          添加
+        </button>
+      </div>
+
+      {objective && (
+        <div style={{ marginTop: 40 }}>
+          <h3>🎯 当前目标：</h3>
+          <p>{objective}</p>
+        </div>
+      )}
+
+      {keyResults.length > 0 && (
+        <div style={{ marginTop: 20 }}>
+          <h3>📌 关键结果：</h3>
+          <ul>
+            {keyResults.map((kr, index) => (
+              <li key={index}>✅ {kr}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
 }
